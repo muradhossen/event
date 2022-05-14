@@ -27,6 +27,9 @@ namespace API.Controllers
         {
             if (await IsUserExist(registerDto.Username)) return BadRequest("User already exist.");
 
+            if (string.IsNullOrEmpty(registerDto.Password) || string.IsNullOrEmpty(registerDto.Username)) 
+                return BadRequest("User name or Password can't be empty");
+
             using var hmac = new HMACSHA512();
 
             var user = new AppUser()
