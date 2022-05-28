@@ -1,4 +1,5 @@
 using API.Data;
+using API.Data.Abstractions;
 using API.Interfaces;
 using API.Middleware;
 using API.Service;
@@ -37,6 +38,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserReposetory, UserReposetory>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
