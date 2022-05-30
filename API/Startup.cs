@@ -1,5 +1,6 @@
 using API.Data;
 using API.Data.Abstractions;
+using API.Helpers;
 using API.Interfaces;
 using API.Middleware;
 using API.Service;
@@ -39,6 +40,7 @@ namespace API
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserReposetory, UserReposetory>();
+            services.AddAutoMapper(typeof(AutomapperProfile).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
