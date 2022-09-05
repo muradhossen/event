@@ -20,7 +20,8 @@
             </li>
         </ul>
 
-        <div class="dropdown" *ngIf="accountServic.currentUser$ | async" dropdown>
+        <div class="dropdown" *ngIf="(accountServic.currentUser$ | async) as user" dropdown>
+            <img src="{{user.photoUrl}}" alt="{{user.username}}">
             <a class="dropdown-toggle text-light" dropdownToggle>Welcome User</a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
                 <a class="dropdown-item" routerLink="member/edit">Edit profile</a>

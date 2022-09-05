@@ -5,6 +5,7 @@ using API.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +52,9 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user= await _dataContext.Users.SingleOrDefaultAsync(c => c.UserName == loginDto.UserName.ToLower());
+            var user= await _dataContext
+                .Users.Include(x=>x.Photos)
+                .SingleOrDefaultAsync(c => c.UserName == loginDto.UserName.ToLower());
 
             if (user == null) return Unauthorized("Invalid username");
 
@@ -64,11 +67,14 @@ namespace API.Controllers
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
             }
 
-            return new UserDto
+            var result= new UserDto
             {
                 UserName = loginDto.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos?.FirstOrDefault(x=>x.IsMain==true)?.Url
             };
+
+            return result;
         }
 
         private async Task<bool> IsUserExist(string userName)

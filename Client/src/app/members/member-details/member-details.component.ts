@@ -27,7 +27,8 @@ export class MemberDetailsComponent implements OnInit {
         imagePercent: 100,
         thumbnailsColumns: 4,
         imageAnimation: NgxGalleryAnimation.Slide,
-        preview: false
+        preview: false,
+        imageBullets: true
       }]
   }
 
@@ -39,11 +40,12 @@ export class MemberDetailsComponent implements OnInit {
         medium: photo?.url,
         large: photo?.url
       });
-      return imageUrl;
     }
+    return imageUrl;
   }
 
   loadMember() {
+    debugger
     this.memberService.getMember(this.activeRoute.snapshot.paramMap.get('username')).subscribe(user => {
       console.log('user', user);
       this.member = user;
