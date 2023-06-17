@@ -13,6 +13,8 @@ import { AccountService } from '../_services/account.service';
 export class NavComponent implements OnInit {
 
   model: any = {};
+defaultPhoto = ''
+
   constructor(public accountServic: AccountService, private router: Router,
     private toastr: ToastrService) { }
 

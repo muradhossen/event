@@ -1,18 +1,46 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
-    <h2 class="text-center text-primary">Sign UP</h2>
+<form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && register()" autocomplete="off">
+    <h2 class="text-center text-primary">Sign up</h2>
     <hr>
 
     <div class="form-group">
-        <input type="text" class="form-control" [(ngModel)]="model.userName" name="userName" placeholder="User Name">
+        <label for="" class="control-label" style="margin-right: 10px;">
+            I am a :
+        </label>
+        <label class="radio-inline">
+            <input type="radio" value="male" formControlName="gender"> Male
+        </label>
+        <label class="radio-inline">
+            <input type="radio" value="female" formControlName="gender"> Female
+        </label>
     </div>
+    <app-text-input [label]="'Username'" [formControl]="registerForm.controls['username']"></app-text-input>
 
-    <div class="form-group">
-        <input type="password" class="form-control" [(ngModel)]="model.password" name="password" placeholder="Password">
+    <app-text-input [label]="'Known As'" [formControl]="registerForm.controls['knownAs']"></app-text-input>
+
+    <app-date-input [label]="'Date of Birth'" [formControl]="registerForm.controls['dateOfBirth']"
+        [maxDate]="maxDate"></app-date-input>
+
+    <app-text-input [label]="'City'" [formControl]="registerForm.controls['city']"></app-text-input>
+
+    <app-text-input [label]="'Country'" [formControl]="registerForm.controls['country']"></app-text-input>
+
+    <app-text-input [label]="'Password'" [type]="'Password'"
+        [formControl]="registerForm.controls['password']"></app-text-input>
+
+    <app-text-input [label]="'Confirm Password'" [type]="'Password'"
+        [formControl]="registerForm.controls['confirmPassword']"></app-text-input>
+
+    <div class="row" *ngIf="validationErrors.length > 0">
+        <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+                {{error}}
+            </li>
+        </ul>
+
     </div>
-
 
     <div class="form-group text-center">
-        <button class="btn btn-success mr-2" type="submit">Register</button>
+        <button [disabled]="!registerForm.valid" class="btn btn-success mr-2" type="submit">Register</button>
         <button class="btn btn-default mr-2" type="button" (click)="cancel()">Cancel</button>
     </div>
 </form>
