@@ -24,7 +24,7 @@
 
            
 
-            <img [src]="user.photoUrl || '/assets/dafult_user_img.png'" alt="{{user.username}}">
+            <img [src]="user.photoUrl || '/assets/dafult_user_img.png'" alt="{{user.knownAs}}">
             <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.knownAs}}</a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
                 <a class="dropdown-item" routerLink="member/edit">Edit profile</a>

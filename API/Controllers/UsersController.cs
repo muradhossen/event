@@ -2,6 +2,7 @@
 using API.Dto;
 using API.Entities;
 using API.Extentions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -31,9 +32,20 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> Get()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> Get([FromQuery] UserParams pageParams)
         {
-            var users = await _userReposetory.GetMembersAsync();
+            var user = await _userReposetory.GetUserByUsernameAsync(User.GetUserName());
+
+            pageParams.Username = user.UserName;
+
+            if (string.IsNullOrWhiteSpace(pageParams.Gender))
+            {
+                pageParams.Gender = user.Gender.ToLower() == "Male".ToLower() ? "female" : "male";
+            }
+
+            var users = await _userReposetory.GetMembersAsync(pageParams);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPage);
 
             return Ok(users);
         }
@@ -91,15 +103,15 @@ namespace API.Controllers
         {
             if (photoId < 0) return BadRequest("Invalid Input");
 
-            var user= await _userReposetory.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _userReposetory.GetUserByUsernameAsync(User.GetUserName());
 
 
             var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
 
-            if (photo != null && photo.IsMain == true) return BadRequest("This is already your main photo");  
+            if (photo != null && photo.IsMain == true) return BadRequest("This is already your main photo");
 
-            var current = user.Photos.FirstOrDefault(x=>x.IsMain == true);
-           
+            var current = user.Photos.FirstOrDefault(x => x.IsMain == true);
+
             if (current != null) current.IsMain = false;
             photo.IsMain = true;
             if (await _userReposetory.SaveAllAsync())
@@ -116,12 +128,12 @@ namespace API.Controllers
             var user = await _userReposetory.GetUserByUsernameAsync(User.GetUserName());
 
             if (user == null) return NotFound();
-            var photo = user.Photos.FirstOrDefault(x=>x.Id == photoId);
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
             if (photo.IsMain) return BadRequest("Cann't delete main photo");
 
-            if(photo.PublicId != null)
+            if (photo.PublicId != null)
             {
-               var result= await _photoService.DeleteAsync(photo.PublicId);
+                var result = await _photoService.DeleteAsync(photo.PublicId);
                 if (result.Error != null) return BadRequest(result.Error.Message);
             }
 
