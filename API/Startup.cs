@@ -38,6 +38,7 @@ namespace API
             services.AddScoped<IUserReposetory, UserReposetory>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<LogUserActivity>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
             #endregion
 
             #region AddAutoMapper
