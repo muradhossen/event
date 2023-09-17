@@ -21,4 +21,8 @@ getMessges(pageNumber, pageSize, container){
   return getPaginatedResult<Message[]>(this.baseUrl + "message" , params, this.http);
 }
 
+getMessageThread(username : string){
+  return this.http.get<Message[]>(this.baseUrl + 'Message/thread/' + username);
+}
+
 }

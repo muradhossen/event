@@ -45,7 +45,7 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   loadMember() {
-    debugger
+    
     this.memberService.getMember(this.activeRoute.snapshot.paramMap.get('username')).subscribe(user => {
       console.log('user', user);
       this.member = user;
