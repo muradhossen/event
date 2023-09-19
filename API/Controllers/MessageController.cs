@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    
+
     [Authorize]
     public class MessageController : BaseApiController
     {
@@ -31,7 +31,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(CreateMessageDto createMessageDto)
         {
-            string userName =  User.GetUserName();
+            string userName = User.GetUserName();
             if (userName == createMessageDto.RecipientUsername.ToLower()) return BadRequest("You cannot message yourself");
 
             var seneder = await _userReposetory.GetUserByUsernameAsync(userName);
@@ -78,6 +78,41 @@ namespace API.Controllers
             Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPage);
 
             return Ok(messages);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMessage(int id)
+        {
+            string username = User.GetUserName();
+
+            var message = await _messageRepository.GetMessageAsync(id);
+
+            if (message.Sender.UserName != username && message.Recipient.UserName != username)
+            {
+                return Unauthorized();
+            }
+
+            if (message.Sender.UserName == username)
+            {
+                message.SenderDeleted = true;
+            }
+
+            if (message.Recipient.UserName == username)
+            {
+                message.RecipientDeleted = true;
+            }
+
+            if (message.SenderDeleted && message.RecipientDeleted)
+            {
+                _messageRepository.DeleteMessage(message);
+            }
+
+            if (await _messageRepository.SaveAllAsync())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Problem deleting message!");
         }
     }
 }
