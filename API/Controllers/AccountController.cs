@@ -35,14 +35,7 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(registerDto.Password) || string.IsNullOrEmpty(registerDto.Username))
                 return BadRequest("User name or Password can't be empty");
 
-            var user = _mapper.Map<AppUser>(registerDto);
-
-            using var hmac = new HMACSHA512();
-
-
-            user.UserName = registerDto.Username.ToLower();
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
-            user.PasswordSalt = hmac.Key;
+            var user = _mapper.Map<AppUser>(registerDto); 
 
             await _dataContext.Users.AddAsync(user);
             await _dataContext.SaveChangesAsync();
@@ -65,14 +58,7 @@ namespace API.Controllers
 
             if (user == null) return Unauthorized("Invalid username");
 
-            var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
-            }
+ 
 
             var result = new UserDto
             {
