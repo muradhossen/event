@@ -31,6 +31,7 @@ namespace API.Controllers
             _photoService = photoService;
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> Get([FromQuery] UserParams pageParams)
         {
@@ -40,7 +41,7 @@ namespace API.Controllers
 
             if (string.IsNullOrWhiteSpace(pageParams.Gender))
             {
-                pageParams.Gender = user.Gender.ToLower() == "Male".ToLower() ? "female" : "male";
+                pageParams.Gender = user.Gender?.ToLower() == "Male".ToLower() ? "female" : "male";
             }
 
             var users = await _userReposetory.GetMembersAsync(pageParams);
@@ -50,10 +51,12 @@ namespace API.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles ="Member")]
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetByUser(string username)
         {
-            return await _userReposetory.GetMemberAsync(username);
+           return await _userReposetory.GetMemberAsync(username);
+
         }
 
         [HttpPut]

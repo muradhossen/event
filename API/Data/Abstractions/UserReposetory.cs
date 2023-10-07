@@ -25,7 +25,7 @@ namespace API.Data.Abstractions
 
         public async Task<MemberDto> GetMemberAsync(string Username)
         {
-            return await _context.Users.Where(x=>x.UserName==Username)
+            return await _context.Users.Where(x=>x.UserName.ToLower()==Username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
