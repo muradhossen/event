@@ -121,7 +121,11 @@ namespace API
 
             #endregion
 
-
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequiredAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin","Moderator"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
