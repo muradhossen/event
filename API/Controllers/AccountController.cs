@@ -64,7 +64,8 @@ namespace API.Controllers
                 UserName = registerDto.Username,
                 Token = await _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
-                Gender = user.Gender
+                Gender = user.Gender,
+                
             };
         }
 
