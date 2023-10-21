@@ -33,25 +33,43 @@ export class PresenceService {
     this.hubConnection.start()
       .catch(error => console.log(error));
 
-    this.hubConnection.on("UserIsOnline", username => {
-      this.toster.success('user is connected.');
-      console.log(username + "user is connected");
+    this.hubConnection.on("UserIsOnline", username => {  
+      debugger  
+      console.log(username + " user is connected");
+
+      this.onlineUsers$.pipe(take(1)).subscribe(usernames => {
+        this.onlineUserSource.next([...usernames, username]);
+        console.log("Previous online users ", usernames);
+
+        this.onlineUsers$.pipe(take(1)).subscribe(newUsernames => {
+          console.log("New usernames ", newUsernames);
+        })
+      })
     });
 
-    this.hubConnection.on("UserIsOffline", username => {
+    this.hubConnection.on("UserIsOffline", username => {       
+      console.warn(username + " user is disconnected!");
 
-      this.toster.error("Member is disconnected");
-      console.warn(username + "user is disconnected!")
+      this.onlineUsers$.pipe(take(1)).subscribe(usernames => {
+        console.log("Previous online users-", usernames );
+        this.onlineUserSource.next([...usernames.filter(x => x !== username)]);
+
+        this.onlineUsers$.pipe(take(1)).subscribe(newOnlineUsernames => {
+          console.log("New online users-" , newOnlineUsernames);
+        })
+      })
     });
 
     this.hubConnection.on("GetOnlineUsers", (usernames: string[]) => {
-      debugger
-      this.onlineUserSource.next(usernames);
+       this.onlineUserSource.next(usernames);
     });
 
     this.hubConnection.on("NewMessageRecived", ({ username, knownAs }) => {
-debugger
-      alert(knownAs + " send a new message!");
+ 
+
+      console.log("this is toster -> " , this.toster)
+
+      
 
       this.toster.info(knownAs + " send a new message!")
         .onTap
