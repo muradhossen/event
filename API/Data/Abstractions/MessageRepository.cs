@@ -44,6 +44,16 @@ namespace API.Data.Abstractions
             return await _dataContext.Connections.FindAsync(connectionId);
         }
 
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            var group =await _dataContext.Groups
+                .Include(c => c.Connections)
+                .Where(g => g.Connections.Any(c => c.ConnectionId == connectionId))
+                .FirstOrDefaultAsync();
+
+            return group;
+        }
+
         public async Task<Message> GetMessageAsync(int id)
         {
             return await _dataContext.Messages
