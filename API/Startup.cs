@@ -50,11 +50,11 @@ namespace API
             services.AddSingleton<PresenceTracker>();
             services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserReposetory, UserReposetory>();
+             
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<LogUserActivity>();
-            services.AddScoped<ILikesRepository, LikesRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
+            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             #endregion
 
             #region AddAutoMapper
@@ -105,7 +105,14 @@ namespace API
             #endregion
 
             #region AddCors
-            services.AddCors();
+            //services.AddCors();
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200");
+            }));
 
             #endregion
 
@@ -170,10 +177,12 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .WithOrigins("http://localhost:4200"));
+            //app.UseCors(x => x.AllowAnyHeader()
+            //.AllowAnyMethod()
+            //.AllowCredentials()
+            //.WithOrigins("http://localhost:4200"));
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
 

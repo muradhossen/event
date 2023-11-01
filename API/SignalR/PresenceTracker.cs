@@ -66,7 +66,8 @@ namespace API.SignalR
             lock (OnlineUsers)
             {
                 connections = OnlineUsers
-                              .GetValueOrDefault(username)
+                              .Where(c => c.Key == username)
+                              .SelectMany(c => c.Value)
                               .ToList();
             }
 

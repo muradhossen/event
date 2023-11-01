@@ -15,16 +15,13 @@ namespace API.Controllers
     [Authorize]
     public class MessageController : BaseApiController
     {
-        private readonly IUserReposetory _userReposetory;
-        private readonly IMessageRepository _messageRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public MessageController(IUserReposetory userReposetory
-            , IMessageRepository messageRepository
+        public MessageController(IUnitOfWork unitOfWork
             , IMapper mapper)
         {
-            _userReposetory = userReposetory;
-            _messageRepository = messageRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -34,8 +31,8 @@ namespace API.Controllers
             string userName = User.GetUserName();
             if (userName == createMessageDto.RecipientUsername.ToLower()) return BadRequest("You cannot message yourself");
 
-            var seneder = await _userReposetory.GetUserByUsernameAsync(userName);
-            var recipient = await _userReposetory.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
+            var seneder = await _unitOfWork.UserRepository.GetUserByUsernameAsync(userName);
+            var recipient = await _unitOfWork.UserRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
 
             if (recipient == null)
             {
@@ -50,9 +47,9 @@ namespace API.Controllers
                 Recipient = recipient,
                 Content = createMessageDto.Content,
             };
-            _messageRepository.AddMessage(message);
+            _unitOfWork.MessageRepository.AddMessage(message);
 
-            if (await _messageRepository.SaveAllAsync())
+            if (await _unitOfWork.CompletedAsync())
             {
                 return Ok(_mapper.Map<MessageDto>(message));
             }
@@ -65,7 +62,7 @@ namespace API.Controllers
         {
             string currentUsername = User.GetUserName();
 
-            return Ok(await _messageRepository.GetMessageThread(currentUsername, username));
+            return Ok(await _unitOfWork.MessageRepository.GetMessageThread(currentUsername, username));
         }
 
         [HttpGet]
@@ -73,7 +70,7 @@ namespace API.Controllers
         {
             messageParams.Username = User.GetUserName();
 
-            var messages = await _messageRepository.GetMessagesForUserAsync(messageParams);
+            var messages = await _unitOfWork.MessageRepository.GetMessagesForUserAsync(messageParams);
 
             Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPage);
 
@@ -85,7 +82,7 @@ namespace API.Controllers
         {
             string username = User.GetUserName();
 
-            var message = await _messageRepository.GetMessageAsync(id);
+            var message = await _unitOfWork.MessageRepository.GetMessageAsync(id);
 
             if (message.Sender.UserName != username && message.Recipient.UserName != username)
             {
@@ -104,10 +101,10 @@ namespace API.Controllers
 
             if (message.SenderDeleted && message.RecipientDeleted)
             {
-                _messageRepository.DeleteMessage(message);
+                _unitOfWork.MessageRepository.DeleteMessage(message);
             }
 
-            if (await _messageRepository.SaveAllAsync())
+            if (await _unitOfWork.CompletedAsync())
             {
                 return Ok();
             }

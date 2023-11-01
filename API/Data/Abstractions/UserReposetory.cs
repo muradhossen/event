@@ -67,6 +67,14 @@ namespace API.Data.Abstractions
                 .SingleOrDefaultAsync(x => x.UserName == name);
         }
 
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users
+                .Where(c => c.UserName == username)
+                .Select(c => c.Gender)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users
@@ -74,10 +82,7 @@ namespace API.Data.Abstractions
                 .ToListAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
+ 
 
         public void UpdateUser(AppUser user)
         {
