@@ -9,8 +9,8 @@ export const environment = {
   // hubUrl : 'https://localhost:44348/hubs/'
 
   
-  apiUrl: 'https://localhost:5001/api/',
-  hubUrl : 'https://localhost:5001/hubs/'
+  apiUrl: 'https://localhost:44348/api/',
+  hubUrl : 'https://localhost:44348/hubs/'
 };
 
 /*

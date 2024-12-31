@@ -30,10 +30,7 @@ namespace API
         {
             _config = config;
         }
-
-
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+         
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityCore<AppUser>(opt =>
@@ -66,6 +63,7 @@ namespace API
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+                //options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
             #endregion
 
