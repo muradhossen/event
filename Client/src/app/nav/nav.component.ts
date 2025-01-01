@@ -24,7 +24,7 @@ defaultPhoto = ''
   login() {
     this.accountServic.login(this.model).subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl('/members');
+      this.router.navigateByUrl('/');
     }, error => {
       console.log(error);
       this.toastr.error(error.error);

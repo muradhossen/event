@@ -1,14 +1,12 @@
 <div class="container mt-5">
-    <div class="center-container">
+
+    <ng-container *ngIf="accountServic.currentUser$ | async">
+       <app-dashboard></app-dashboard>
+    </ng-container>
+
+    <div *ngIf="(accountServic.currentUser$ | async)===null" class="center-container"> 
 
         <app-upload-image></app-upload-image>
        
-    </div>
-    <div *ngIf="registerMode" class="container">
-        <div class="row justify-content-center">
-            <div class="col-4">
-                <app-register (calcelRegister)=" cancelRegisterMode($event)"></app-register>
-            </div>
-        </div>
-    </div>
+    </div> 
 </div>

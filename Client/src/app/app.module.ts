@@ -36,11 +36,12 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { UploadImageComponent } from './upload-image/upload-image.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
     NavComponent,
     HomeComponent,
@@ -63,7 +64,8 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
     PhotoManagementComponent,
     UserManagementComponent,
     RolesModalComponent,
-      UploadImageComponent
+      UploadImageComponent,
+      DashboardComponent
    ],
   imports: [
     BrowserModule,

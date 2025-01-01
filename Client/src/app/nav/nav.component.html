@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
     <div class="container">
-        <a class="navbar-brand" routerLink="/" routerLinkActive="active">Dating App</a>
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">Event App</a>
         <ul class="navbar-nav mr-auto">
             <ng-container *ngIf="accountServic.currentUser$ | async">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
                 </li>
                 <li class="nav-item">
@@ -15,7 +15,7 @@
                 </li>
                 <li *appHasRole="['Admin','Moderator']" class="nav-item">
                     <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
-                </li>
+                </li> -->
             </ng-container>
 
             <!-- <li class="nav-item">
