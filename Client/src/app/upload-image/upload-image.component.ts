@@ -35,6 +35,18 @@ export class UploadImageComponent implements OnInit {
   }
 
   submitImage(){ 
+ 
+    if(!this.userPhotoParams.id){
+      this.toster.error('Please select a city');
+      return;
+    }
+    
+    if(!this.userPhotoParams.image){
+      this.toster.error('Please select an image');
+      return;
+    }
+
+
 
    this.cityService.uploadImage(this.userPhotoParams).subscribe({
 

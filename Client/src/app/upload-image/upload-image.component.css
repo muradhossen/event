@@ -1,0 +1,9 @@
+.width-100px{
+    width: 100px;
+}
+
+@media (max-width: 529px) {
+    .lbl {
+        display: none;
+    }
+}

@@ -147,6 +147,7 @@ namespace API.Controllers
             return BadRequest("Failed to delete photo");
         }
 
+        [AllowAnonymous]
         [HttpPost("upload-photo")]
         public async Task<ActionResult<PhotoDto>> UploadPhoto([FromForm] UserPhotoParam @params)
         {
