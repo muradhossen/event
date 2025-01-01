@@ -6,53 +6,32 @@ import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 import { PresenceService } from './presence.service';
 import { City } from '../_models/city';
+import { UserPhotoParams } from '../_models/userPhotoParams';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AccountService {
+export class CityService {
   baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient, private presenceService : PresenceService) { }
+  constructor(
+    private http: HttpClient,
+    private presenceService: PresenceService
+  ) {}
 
-  login(model: any) {
-    return this.http.post(this.baseUrl + 'Cities', model);
-  }
-  serCurrentUser(user: User) {
-
-    user.roles = [];
-
-    const roles = this.getDecodedToken(user.token).role;
-
-    Array.isArray(roles) ? user.roles = roles :user.roles.push(roles);
-
-    localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSource.next(user);
+  getCities() {
+    return this.http.get<City[]>(this.baseUrl + 'Cities');
   }
 
-
-  logout() {
-    localStorage.removeItem('user');
-    this.presenceService.stopHubConnection();
-    this.currentUserSource.next(null);
+  uploadImage(cityParams: UserPhotoParams) {
+    return this.http.post(this.baseUrl + 'Users/upload-photo', mapToFomData(cityParams));
   }
-
-  register(user: any) {
-    return this.http.post(this.baseUrl + 'Account/register', user).pipe(
-      map((user: User) => {
-        if (user) {
-          this.serCurrentUser(user);
-          this.presenceService.createHubConnection(user);
-        }
-      })
-
-    );
-  }
-
-  getDecodedToken(token : string){
-    return JSON.parse(atob(token.split('.')[1]));
-  }
-
+}
+function mapToFomData(cityParams: UserPhotoParams): any {
+  const formData = new FormData();
+  formData.append('id', cityParams.id.toString());
+  formData.append('image', cityParams.image);
+  return formData;
 }

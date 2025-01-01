@@ -32,7 +32,7 @@ namespace API.Controllers
             _photoService = photoService;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> Get([FromQuery] UserParams pageParams)
         {
@@ -52,11 +52,11 @@ namespace API.Controllers
             return Ok(users);
         }
 
-         
+
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetByUser(string username)
         {
-           return await _unitOfWork.UserRepository.GetMemberAsync(username);
+            return await _unitOfWork.UserRepository.GetMemberAsync(username);
 
         }
 
@@ -145,6 +145,24 @@ namespace API.Controllers
             if (await _unitOfWork.CompletedAsync()) return Ok();
 
             return BadRequest("Failed to delete photo");
+        }
+
+        [HttpPost("upload-photo")]
+        public async Task<ActionResult<PhotoDto>> UploadPhoto([FromForm] UserPhotoParam @params)
+        {
+
+            var result = await _photoService.AddPhotoAsync(@params.Image);
+
+            if (result.Error != null)
+                return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            }; 
+            return Ok(_mapper.Map<PhotoDto>(photo));
+
         }
     }
 }

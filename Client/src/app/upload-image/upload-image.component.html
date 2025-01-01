@@ -1,3 +1,24 @@
-<p>
-  upload-image works!
-</p>
+<div class="container mt-3">
+  <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="submitImage()" autocomplete="off">
+
+    <div class="form-group px-2">
+      <label> Select city :</label>
+      <select name="city" class="form-control ml-1" style="width: 140px;" [(ngModel)]="userPhotoParams.id">
+        <option *ngFor="let city of cities" [value]="city.id">
+          {{city.name}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group px-2">
+      <label> Select image :</label>
+      <input type="file" name="image" id="file-upload" class="form-control ml-1"  
+       #fileInput
+        (change)="onFileSelected($event)"> 
+
+    </div>
+
+    <button type="submit" class="btn btn-primary ml-1">Submit</button>
+
+  </form>
+</div>

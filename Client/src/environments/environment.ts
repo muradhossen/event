@@ -10,7 +10,8 @@ export const environment = {
 
   
   apiUrl: 'https://localhost:44348/api/',
-  hubUrl : 'https://localhost:44348/hubs/'
+  hubUrl : 'https://localhost:44348/hubs/',
+  defaultItemImagePath : "./assets/media/avatars/blank.png",
 };
 
 /*
