@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { PhotoMessage } from '../_models/photo-message';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,15 @@ export class PresenceService {
   private onlineUserSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUserSource.asObservable();
 
-  constructor(private toster: ToastrService, private router: Router) {
+    private photoThreadSource = new BehaviorSubject<PhotoMessage[]>([]);
+    public photoThread$ = this.photoThreadSource.asObservable();
+
+  constructor(private toster: ToastrService, 
+              private router: Router) {
   }
 
 
-  createHubConnection(user: User) {
+  createHubConnection(user: User, cd: ChangeDetectorRef) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'presence', {
         accessTokenFactory: () => user.token
@@ -77,6 +82,19 @@ export class PresenceService {
         .subscribe(() => {
           this.router.navigateByUrl("members/" + username + "?tab=3");
         })
+    })
+
+    this.hubConnection.on("NewPhotoMessageRecived", ({ photoUrl, publicId }) => {
+ 
+
+      console.log("this is toster -> " , photoUrl);
+
+      this.photoThread$.pipe(take(1)).subscribe(messages => {
+        this.photoThreadSource.next([...messages, photoUrl]); 
+        
+        cd.detectChanges();
+      })
+   
     })
 
   }

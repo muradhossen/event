@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -16,13 +16,13 @@ export class AccountService {
 
   constructor(private http: HttpClient, private presenceService : PresenceService) { }
 
-  login(model: any) {
+  login(model: any, cd: ChangeDetectorRef) {
     return this.http.post(this.baseUrl + 'Account/login', model).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
           this.serCurrentUser(user);
-          this.presenceService.createHubConnection(user);
+          this.presenceService.createHubConnection(user, cd);
           return user;
         }
       })
@@ -47,12 +47,12 @@ export class AccountService {
     this.currentUserSource.next(null);
   }
 
-  register(user: any) {
+  register(user: any, cd: ChangeDetectorRef) {
     return this.http.post(this.baseUrl + 'Account/register', user).pipe(
       map((user: User) => {
         if (user) {
           this.serCurrentUser(user);
-          this.presenceService.createHubConnection(user);
+          this.presenceService.createHubConnection(user,cd);
         }
       })
 

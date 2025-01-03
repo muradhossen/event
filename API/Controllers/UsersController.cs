@@ -4,13 +4,17 @@ using API.Entities;
 using API.Extentions;
 using API.Helpers;
 using API.Interfaces;
+using API.SignalR;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -22,14 +26,20 @@ namespace API.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
+        private readonly IHubContext<PresenceHub> _presenceHub;
+        private readonly PresenceTracker _tracker;
 
         public UsersController(IUnitOfWork unitOfWork
             , IMapper mapper
-            , IPhotoService photoService)
+            , IPhotoService photoService
+            , IHubContext<PresenceHub> presenceHub
+            , PresenceTracker tracker)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _photoService = photoService;
+            _presenceHub = presenceHub;
+            _tracker = tracker;
         }
 
 
@@ -151,19 +161,43 @@ namespace API.Controllers
         [HttpPost("upload-photo")]
         public async Task<ActionResult<PhotoDto>> UploadPhoto([FromForm] UserPhotoParam @params)
         {
+         
+            return await SendPhotoMessage();
 
-            var result = await _photoService.AddPhotoAsync(@params.Image);
+            //var result = await _photoService.AddPhotoAsync(@params.Image);
 
-            if (result.Error != null)
-                return BadRequest(result.Error.Message);
+            //if (result.Error != null)
+            //    return BadRequest(result.Error.Message);
 
-            var photo = new Photo
+            //var photo = new Photo
+            //{
+            //    Url = result.SecureUrl.AbsoluteUri,
+            //    PublicId = result.PublicId
+            //};
+
+
+            //if (connections is not null)
+            //{
+            //    await _presenceHub.Clients.Clients(connections)
+            //    .SendAsync("NewPhotoMessageRecived", new { photoUrl = result.SecureUrl.AbsoluteUri, publicId = result.PublicId });
+            //}
+            //return Ok(_mapper.Map<PhotoDto>(photo));
+
+        }
+
+        private async Task<ActionResult<PhotoDto>> SendPhotoMessage()
+        {
+            List<string> connections = await _tracker.GetAllConnections();
+
+            if (connections is not null && connections.Count > 0)
             {
-                Url = result.SecureUrl.AbsoluteUri,
-                PublicId = result.PublicId
-            }; 
-            return Ok(_mapper.Map<PhotoDto>(photo));
+                var index = new Random().Next(1, 10);
+                await _presenceHub.Clients.Clients(connections)
+                .SendAsync("NewPhotoMessageRecived", new { photoUrl = $"https://swiperjs.com/demos/images/nature-{index}.jpg", publicId = "test-public-id" });
 
+                return Ok();
+            }
+            return BadRequest("No active connections");
         }
     }
 }

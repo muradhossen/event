@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { User } from './_models/user';
 import { AccountService } from './_services/account.service';
 import { PresenceService } from './_services/presence.service';
@@ -12,7 +12,10 @@ import { PresenceService } from './_services/presence.service';
 export class AppComponent implements OnInit {
   title = 'Dating Application';
   users: any;
-  constructor(private http: HttpClient, private accountService: AccountService, private presenceService : PresenceService) {
+  constructor(private http: HttpClient, 
+    private accountService: AccountService,
+    private presenceService : PresenceService,
+    private cd : ChangeDetectorRef) {
 
   }
 
@@ -26,10 +29,8 @@ export class AppComponent implements OnInit {
 
     if(user){
       this.accountService.serCurrentUser(user);
-      this.presenceService.createHubConnection(user);
+      this.presenceService.createHubConnection(user, this.cd);
     }
-
-
   }
 
   getUsers() {

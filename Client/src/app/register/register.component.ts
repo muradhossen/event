@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -22,7 +22,10 @@ export class RegisterComponent implements OnInit {
   validationErrors : string[] = [];
 
   constructor(private accountService: AccountService,
-    private toastr: ToastrService, private fb: FormBuilder, private router : Router) { }
+    private toastr: ToastrService, 
+    private fb: FormBuilder, 
+    private router : Router,
+    private cd : ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
@@ -52,7 +55,7 @@ export class RegisterComponent implements OnInit {
   }
   register() { 
  
-    this.accountService.register(this.registerForm.value).subscribe(response => {
+    this.accountService.register(this.registerForm.value, this.cd).subscribe(response => {
 
       this.router.navigateByUrl('/members');
       

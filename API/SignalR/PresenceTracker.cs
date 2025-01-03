@@ -73,5 +73,18 @@ namespace API.SignalR
 
             return Task.FromResult(connections);
         }
+
+        public Task<List<string>> GetAllConnections()
+        {
+            List<string> connections;
+            lock (OnlineUsers)
+            {
+                connections = OnlineUsers 
+                              .SelectMany(c => c.Value)
+                              .ToList();
+            }
+
+            return Task.FromResult(connections);
+        }
     }
 }
