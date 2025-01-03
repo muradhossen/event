@@ -197,7 +197,7 @@ namespace API.Controllers
 
                 return Ok();
             }
-            return BadRequest("No active connections");
+            return Ok();
         }
     }
 }
