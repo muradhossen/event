@@ -1,4 +1,5 @@
 ﻿using API.Extentions;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -10,10 +11,13 @@ namespace API.SignalR
     public class PresenceHub : Hub
     {
         private readonly PresenceTracker _tracker;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PresenceHub(PresenceTracker tracker)
+        public PresenceHub(PresenceTracker tracker,
+            IUnitOfWork unitOfWork)
         {
             _tracker = tracker;
+            _unitOfWork = unitOfWork;
         }
 
         public override async Task OnConnectedAsync()
@@ -27,6 +31,8 @@ namespace API.SignalR
 
             var onlineUsers = await _tracker.GetOnlineUsers();
             await Clients.Caller.SendAsync("GetOnlineUsers", onlineUsers);
+
+            await _unitOfWork.UserPhotoMessageRepository.GetAllUserImageMessages();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
