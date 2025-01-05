@@ -1,12 +1,10 @@
 <div class="container mt-5">
 
     <ng-container *ngIf="accountServic.currentUser$ | async">
-       <app-dashboard></app-dashboard>
+        <app-dashboard></app-dashboard>
     </ng-container>
 
-    <div *ngIf="(accountServic.currentUser$ | async)===null" class="center-container"> 
-
+    <div *ngIf="(accountServic.currentUser$ | async)===null" class="center-container">
         <app-upload-image></app-upload-image>
-       
-    </div> 
+    </div>
 </div>

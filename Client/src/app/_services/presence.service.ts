@@ -84,14 +84,15 @@ export class PresenceService {
         })
     })
 
-    this.hubConnection.on("NewPhotoMessageRecived", ({ photoUrl, publicId }) => {
+    this.hubConnection.on("NewPhotoMessageRecived", ({ photoUrl, publicId, city }) => {
  
 
       console.log("this is toster -> " , photoUrl);
 
       this.photoThread$.pipe(take(1)).subscribe(messages => {
-        this.photoThreadSource.next([...messages, photoUrl]); 
+        this.photoThreadSource.next([...messages, { photoUrl, publicId, city }]); 
         
+        console.log("Photo messages ", messages);
         cd.detectChanges();
       })
    

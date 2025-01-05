@@ -1,8 +1,8 @@
 <div class="container mt-3">
-  <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="submitImage()" autocomplete="off">
+  <!-- <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="submitImage()" autocomplete="off">
 
     <div class="form-group px-2">
-      <label class="width-100px lbl"> Select city :</label>
+      <label class="width-100px lbl "> Select city :</label>
       <select name="city" class="form-control ml-1" style="width: 200px;" [(ngModel)]="userPhotoParams.id">
         <option *ngFor="let city of cities" [value]="city.id">
           {{city.name}}
@@ -21,5 +21,30 @@
 
     <button type="submit" class="btn btn-primary ml-1">Submit</button>
 
+  </form> -->
+
+  <form #form="ngForm" (ngSubmit)="submitImage()" autocomplete="off">
+    <div class="form-row align-items-center">
+      <div class="col-sm-3 my-1">
+        <label class="sr-only" for="inlineFormInputName">City</label>         
+        <select  id="inlineFormInputName" name="city" class="form-control" [(ngModel)]="userPhotoParams.id">
+          <option *ngFor="let city of cities" [value]="city.id">
+            {{city.name}}
+          </option>
+        </select>
+
+
+      </div>
+      <div class="col-sm-3 my-1">
+        <label class="sr-only" for="inlineFormInputGroupUsername">Username</label>
+        <div class="input-group"> 
+          <input type="file" name="image" id="file-upload" class="form-control" id="inlineFormInputGroupUsername" placeholder="Select image" #fileInput (change)="onFileSelected($event)">
+        </div>
+      </div>
+  
+      <div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
   </form>
 </div>

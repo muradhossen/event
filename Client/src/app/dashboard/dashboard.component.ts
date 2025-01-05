@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PresenceService } from '../_services/presence.service';
+import { take } from 'rxjs/operators';
+import { PhotoMessage } from '../_models/photo-message';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,9 +16,24 @@ export class DashboardComponent implements OnInit {
     "Joypurhat": { lat: 25.105101, lng: 89.028877 },
   };
 
+  photoMessages : PhotoMessage[] = [];
+  
+  mapBounds = {
+    topLeft: { lat: 26.6319, lon: 88.0844 },
+    bottomRight: { lat: 20.6709, lon: 92.6442 }, 
+  };
+  mapDimensions = { width: 576, height: 751 };
+
   constructor(public presenceService: PresenceService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this.presenceService.photoThread$.pipe(take(1)).subscribe((res) => { 
+ 
+    //   [... this.photoMessages, res]
+
+    //   console.log("Photo messages ", this.photoMessages);
+    // });
+  }
 
   addPin() {
     const mapImage = document.getElementById('mapContainer'); 
@@ -25,14 +42,15 @@ export class DashboardComponent implements OnInit {
     const districtCoords =  this.districtCoordinates[districtSelect];
 
     if (districtCoords) {
-      const pinPosition = calculatePinPosition(districtCoords.lat, districtCoords.lng);
+      // const pinPosition = calculatePinPosition(districtCoords.lat, districtCoords.lng);
+      const pinPosition = this.geoToPixel(districtCoords.lat, districtCoords.lng);
   
       
       const pin = document.createElement('div');
       pin.style.position = 'absolute';
       pin.style.color = 'red';
-      pin.style.left = `${pinPosition.x + 22}px`;  
-      pin.style.top = `${pinPosition.y - 90}px`; 
+      pin.style.left = `${pinPosition.x }px`;  
+      pin.style.top = `${pinPosition.y }px`; 
       pin.style.width = '10px';
       pin.style.height = '10px';
       pin.style.borderRadius = '50%';
@@ -40,6 +58,17 @@ export class DashboardComponent implements OnInit {
   
       mapImage.appendChild(pin); 
     }
+  }
+
+  private geoToPixel(lat: number, lon: number): { x: number; y: number } {
+    const { topLeft, bottomRight } = this.mapBounds;
+    const { width, height } = this.mapDimensions;
+  
+ 
+    const x = ((lon - topLeft.lon) / (bottomRight.lon - topLeft.lon)) * width;
+    const y = ((topLeft.lat - lat) / (topLeft.lat - bottomRight.lat)) * height;
+  
+    return { x, y };
   }
 }
 

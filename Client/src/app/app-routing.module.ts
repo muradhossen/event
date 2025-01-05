@@ -14,10 +14,12 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
 import { MemberDetaileResolver } from './_resolver/member-detaild.resolver';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { AdminGuard } from './_guards/admin.guard';
+import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  {path : 'login' , component : LoginComponent},
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -28,7 +30,8 @@ const routes: Routes = [
       { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard] },
       { path: 'lists', component: ListsComponent },
       { path: 'message', component: MessagesComponent },
-      {path : 'admin' , component : AdminPanelComponent, canActivate : [AdminGuard]}
+      {path : 'admin' , component : AdminPanelComponent, canActivate : [AdminGuard]},
+
     ]
   },
   { path: 'errors', component: TestErrorsComponent },

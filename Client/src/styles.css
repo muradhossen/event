@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+.background-image {
+  
+    background-image: url('../src/assets/Home-page.png');  
+    background-size: cover;   
+    background-repeat: no-repeat;  
+    z-index: -1;  
+  }
+
+  @media (max-width: 768px) {
+    .background-image {
+      background-size: contain; /* Scale the image to fit within the viewport */
+    }
+  }

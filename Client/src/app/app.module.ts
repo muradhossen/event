@@ -38,11 +38,12 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
 import { UploadImageComponent } from './upload-image/upload-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { LoginComponent } from './login/login.component';
 
 
 
 @NgModule({
-  declarations: [		
+  declarations: [			
     AppComponent,
     NavComponent,
     HomeComponent,
@@ -66,7 +67,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     UserManagementComponent,
     RolesModalComponent,
       UploadImageComponent,
-      DashboardComponent
+      DashboardComponent,
+      LoginComponent
    ],
   imports: [
     BrowserModule,

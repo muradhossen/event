@@ -24,83 +24,26 @@ coverflow-effect-modifier="1"
 
   <swiper-container class="mySwiper2" space-between="10" slides-per-view="5" free-mode="true"
     watch-slides-progress="true">
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-    </swiper-slide>
+    <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
+      <img [src]="url.photoUrl" />
+    </swiper-slide> 
   </swiper-container>
 
-  <hr>
+  <hr *ngIf="(presenceService.photoThread$| async).length > 0" />
 
   <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
-    thumbs-swiper=".mySwiper2" space-between="5"  autoplay="true" loop="true">
-    <swiper-slide>
-      <img class="round-img" src="https://swiperjs.com/demos/images/nature-1.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img"  src="https://swiperjs.com/demos/images/nature-2.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-3.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-4.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-5.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-6.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-7.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-8.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-9.jpg" />
-    </swiper-slide>
-    <swiper-slide>
-      <img  class="round-img" src="https://swiperjs.com/demos/images/nature-10.jpg" />
-    </swiper-slide>
+    thumbs-swiper=".mySwiper2" space-between="4"  autoplay="true" loop="true"
+     >
+    <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
+      <img [src]="url.photoUrl" />
+    </swiper-slide> 
   </swiper-container>
-
+  <button (click)="addPin()">Add pin</button>
 </div>
 
-<div class="col-md-6"  id="mapContainer">
-  <button (click)="addPin()">Add pin</button>
-<img src="../../assets/bangladesh_districts.png"
+<div class="col-md-6 map-container"  id="mapContainer">
+<img src="../../assets/bangladesh_districts.jpg"
  alt="Bangladesh Map" 
- class="bd-map" 
- height="500px"
-  width="400px"
-  id="mapImage">
+ class="map-image" id="mapImage">
 </div>
 </div>

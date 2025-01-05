@@ -99,3 +99,15 @@
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     margin: 0px 0 12px 0;
   }
+
+  .map-container {
+    position: relative;
+    width: 567px; /* Match the image width */
+    height: 751px; /* Match the image height */
+    margin: auto;
+  }
+
+  .map-image {
+    width: 100%;  
+    height: auto; 
+  }

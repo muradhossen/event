@@ -161,27 +161,31 @@ namespace API.Controllers
         [HttpPost("upload-photo")]
         public async Task<ActionResult<PhotoDto>> UploadPhoto([FromForm] UserPhotoParam @params)
         {
-         
-            return await SendPhotoMessage();
 
-            //var result = await _photoService.AddPhotoAsync(@params.Image);
+            //    return await SendPhotoMessage();
 
-            //if (result.Error != null)
-            //    return BadRequest(result.Error.Message);
+            var result = await _photoService.AddPhotoAsync(@params.Image);
 
-            //var photo = new Photo
-            //{
-            //    Url = result.SecureUrl.AbsoluteUri,
-            //    PublicId = result.PublicId
-            //};
+            if (result.Error != null)
+                return BadRequest(result.Error.Message);
 
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
 
-            //if (connections is not null)
-            //{
-            //    await _presenceHub.Clients.Clients(connections)
-            //    .SendAsync("NewPhotoMessageRecived", new { photoUrl = result.SecureUrl.AbsoluteUri, publicId = result.PublicId });
-            //}
-            //return Ok(_mapper.Map<PhotoDto>(photo));
+            List<string> connections = await _tracker.GetAllConnections();
+            if (connections is not null)
+            {
+                await _presenceHub.Clients.Clients(connections)
+                .SendAsync("NewPhotoMessageRecived", new { 
+                    photoUrl = result.SecureUrl.AbsoluteUri,
+                    publicId = result.PublicId,
+                    city = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name
+                });
+            }
+            return Ok(_mapper.Map<PhotoDto>(photo));
 
         }
 
