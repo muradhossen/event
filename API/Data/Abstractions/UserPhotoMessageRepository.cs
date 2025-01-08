@@ -18,4 +18,11 @@ public class UserPhotoMessageRepository : IUserPhotoMessageRepository
     {
         return await _dbContext.UserImageMessages.ToListAsync();
     }
+
+    public async Task<UserImageMessage> AddAsync(UserImageMessage userImageMessage)
+    {
+        await _dbContext.UserImageMessages.AddAsync(userImageMessage);
+
+        return userImageMessage;
+    }
 }

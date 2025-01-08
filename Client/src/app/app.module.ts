@@ -39,11 +39,12 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { LoginComponent } from './login/login.component';
+import { BackgroundImageComponent } from './background-image/background-image.component';
 
 
 
 @NgModule({
-  declarations: [			
+  declarations: [				
     AppComponent,
     NavComponent,
     HomeComponent,
@@ -68,7 +69,8 @@ import { LoginComponent } from './login/login.component';
     RolesModalComponent,
       UploadImageComponent,
       DashboardComponent,
-      LoginComponent
+      LoginComponent,
+      BackgroundImageComponent
    ],
   imports: [
     BrowserModule,

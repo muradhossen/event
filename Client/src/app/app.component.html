@@ -3,6 +3,6 @@
 </ngx-spinner>
 <!-- <app-nav></app-nav> -->
 
-<div class="container" style="margin-top: 100px;">
+<div class="background-image" [ngClass]="(this.accountService.currentUser$ | async)=== null ? 'background-image-logged-out' : 'background-image-logged-in'">
     <router-outlet></router-outlet>
 </div>

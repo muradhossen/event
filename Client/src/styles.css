@@ -1,13 +1,37 @@
-.background-image {
-  
-    background-image: url('../src/assets/Home-page.png');  
+.background-image { 
     background-size: cover;   
     background-repeat: no-repeat;  
     z-index: -1;  
+    height: 100%;
+    width: 100%;
   }
 
+  .background-image-logged-out {
+    background-image: url('../src/assets/home-page-mobile.png');
+  }
+  
+  .background-image-logged-in {
+    background-image: url('../src/assets/dashboard_home.png'); /* Logged-in user image */
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; 
+  }
+
+  .logo{
+    width: 235px;
+    height: 200px;
+  }
+
+  .main_slid_image {
+    border-radius: 0 0 10px 10px !important;
+  }
+/* 
   @media (max-width: 768px) {
     .background-image {
-      background-size: contain; /* Scale the image to fit within the viewport */
+      background-size: contain;  
     }
-  }
+  } */

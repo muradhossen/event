@@ -98,6 +98,20 @@ export class PresenceService {
    
     })
 
+    this.hubConnection.on("GettAllPhotoMessages", (allMessages : PhotoMessage[]) => {
+ 
+
+      console.log("this is toster -> " , allMessages);
+
+      this.photoThread$.pipe(take(1)).subscribe(messages => {
+        this.photoThreadSource.next([...messages, ...allMessages]); 
+        
+        console.log("Photo messages ", messages);
+        cd.detectChanges();
+      })
+   
+    })
+
   }
 
   stopHubConnection() {

@@ -86,7 +86,7 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
-        [HttpPost("Add-Photo")]
+        [HttpPost("AddAsync-Photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
             var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUserName());
@@ -174,6 +174,16 @@ namespace API.Controllers
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId
             };
+
+            await _unitOfWork.UserPhotoMessageRepository.AddAsync(new UserImageMessage
+            {
+                 City = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name,
+                PhotoUrl = result.SecureUrl.AbsoluteUri,
+                CityId = @params.Id,
+                PublicId = result.PublicId
+            });
+
+            await _unitOfWork.CompletedAsync();
 
             List<string> connections = await _tracker.GetAllConnections();
             if (connections is not null)

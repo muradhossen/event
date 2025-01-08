@@ -7,4 +7,5 @@ namespace API.Interfaces;
 public interface IUserPhotoMessageRepository
 {
     Task<IList<UserImageMessage>> GetAllUserImageMessages();
+    Task<UserImageMessage> AddAsync(UserImageMessage userImageMessage);
 }

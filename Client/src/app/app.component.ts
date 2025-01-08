@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   title = 'Dating Application';
   users: any;
   constructor(private http: HttpClient, 
-    private accountService: AccountService,
+    public accountService: AccountService,
     private presenceService : PresenceService,
     private cd : ChangeDetectorRef) {
 
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
     if(user){
       this.accountService.serCurrentUser(user);
-      this.presenceService.createHubConnection(user, this.cd);
+      this.presenceService.createHubConnection(user, this.cd);      
     }
   }
 

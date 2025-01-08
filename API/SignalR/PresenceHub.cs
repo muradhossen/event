@@ -32,7 +32,11 @@ namespace API.SignalR
             var onlineUsers = await _tracker.GetOnlineUsers();
             await Clients.Caller.SendAsync("GetOnlineUsers", onlineUsers);
 
-            await _unitOfWork.UserPhotoMessageRepository.GetAllUserImageMessages();
+           var messages = await _unitOfWork.UserPhotoMessageRepository.GetAllUserImageMessages();
+
+            await Clients.Caller.SendAsync("GettAllPhotoMessages", messages);
+
+
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
