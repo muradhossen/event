@@ -36,7 +36,7 @@ export class UploadImageComponent implements OnInit {
 
   submitImage(){ 
  
-    if(!this.userPhotoParams.id){
+    if(!this.userPhotoParams.id || this.userPhotoParams.id == 0){
       this.toster.error('Please select a city');
       return;
     }

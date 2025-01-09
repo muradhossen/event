@@ -26,14 +26,25 @@
   <form #form="ngForm" (ngSubmit)="submitImage()" autocomplete="off">
     <div class="form-row align-items-center">
       <div class="col-sm-3 my-1">
-        <label class="sr-only" for="inlineFormInputName">City</label>         
-        <select  id="inlineFormInputName" name="city" class="form-control" [(ngModel)]="userPhotoParams.id">
+        <!-- <label class="sr-only" for="inlineFormInputName">City</label>          -->
+        <!-- <select   id="inlineFormInputName" name="city" class="form-control" [(ngModel)]="userPhotoParams.id">
+          
           <option *ngFor="let city of cities" [value]="city.id">
             {{city.name}}
           </option>
+        </select>  -->
+       
+ 
+        <select class="form-control" id="exampleFormControlSelect1"
+        name="city"
+         [(ngModel)]="userPhotoParams.id"
+        >
+          <option value="0" disabled>Select the district where the picture was taken</option>
+          <option *ngFor="let city of cities" [value]="city.id">
+            {{city.name}}            
+          </option>
         </select>
-
-
+        
       </div>
       <div class="col-sm-3 my-1">
         <label class="sr-only" for="inlineFormInputGroupUsername">Username</label>
