@@ -82,7 +82,7 @@ export class MemberDetailsComponent implements OnInit, OnDestroy {
   }
 
   selectTab(tabId: number) {
-    debugger
+    
     this.memberTabs.tabs[tabId].active = true;
   }
 

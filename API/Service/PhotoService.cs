@@ -2,8 +2,11 @@
 using API.Interfaces;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using System.IO;
+using System;
 using System.Threading.Tasks;
 
 namespace API.Service
@@ -11,14 +14,18 @@ namespace API.Service
     public class PhotoService : IPhotoService
     {
         private readonly Cloudinary _cloudinary;
-        public PhotoService(IOptions<CloudinarySettings> config)
+        private readonly IWebHostEnvironment _environment;
+
+        public PhotoService(IOptions<CloudinarySettings> config,
+            IWebHostEnvironment environment)
         {
             var acc = new Account(
                 config.Value.CloudName,
                 config.Value.ApiKey,
                 config.Value.ApiSecret                
                 );
-            _cloudinary = new Cloudinary(acc); 
+            _cloudinary = new Cloudinary(acc);
+            _environment = environment;
         }
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
         {
@@ -46,6 +53,31 @@ namespace API.Service
             var result = await _cloudinary.DestroyAsync(deleteParams);
 
             return result;
+        }
+
+        public async Task<string> SaveFileAsync(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("Invalid file."); 
+          
+            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+
+           
+            var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            // Save the file
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+           
+            var fileUrl = $"/uploads/{fileName}"; // Relative URL
+            return fileUrl;
         }
     }
 }

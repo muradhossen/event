@@ -102,8 +102,8 @@
 
   .map-container {
     position: relative;
-    width: 567px; /* Match the image width */
-    height: 751px; /* Match the image height */
+    width: 555; 
+    height: 741px;   
     margin: auto;
   }
 

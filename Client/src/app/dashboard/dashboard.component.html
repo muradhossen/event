@@ -23,7 +23,7 @@ coverflow-effect-modifier="1"
 <div class="swiper-container-div col-md-6">
   <img src="../../assets/Logo.png" alt="Logo" class="logo"/>
 
-  <swiper-container class="mySwiper2" space-between="10" slides-per-view="5" free-mode="true"
+  <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
     watch-slides-progress="true">
     <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
       <img [src]="url.photoUrl" />
@@ -39,11 +39,14 @@ coverflow-effect-modifier="1"
       <img [src]="url.photoUrl" class="main_slid_image" />
     </swiper-slide> 
   </swiper-container>
-  <button (click)="addPin()">Add pin</button>
+  <!-- <button (click)="addPin()">Add pin</button> -->
 </div>
 
 <div class="col-md-6 map-container"  id="mapContainer">
-<img src="../../assets/bd-map.png"
+  <img src="../../assets/Our_Way_Logo.png" width="width-100px" height="100px" style="right: 0;
+  position: absolute;
+  margin: 10px;">
+<img src="../../assets/map-2.png"
  alt="Bangladesh Map" 
  class="map-image" id="mapImage">
 </div>

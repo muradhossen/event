@@ -22,6 +22,9 @@ export class PresenceService {
     private photoThreadSource = new BehaviorSubject<PhotoMessage[]>([]);
     public photoThread$ = this.photoThreadSource.asObservable();
 
+  private pinSource = new BehaviorSubject<PhotoMessage>(null);
+  pin$ = this.pinSource.asObservable();
+
   constructor(private toster: ToastrService, 
               private router: Router) {
   }
@@ -39,7 +42,7 @@ export class PresenceService {
       .catch(error => console.log(error));
 
     this.hubConnection.on("UserIsOnline", username => {  
-      debugger  
+        
       console.log(username + " user is connected");
 
       this.onlineUsers$.pipe(take(1)).subscribe(usernames => {
@@ -86,15 +89,13 @@ export class PresenceService {
 
     this.hubConnection.on("NewPhotoMessageRecived", ({ photoUrl, publicId, city }) => {
  
-
-      console.log("this is toster -> " , photoUrl);
-
+ 
       this.photoThread$.pipe(take(1)).subscribe(messages => {
         this.photoThreadSource.next([...messages, { photoUrl, publicId, city }]); 
-        
-        console.log("Photo messages ", messages);
+         
+        this.pinSource.next({ photoUrl, publicId, city });
         cd.detectChanges();
-      })
+      });
    
     })
 
@@ -106,9 +107,16 @@ export class PresenceService {
       this.photoThread$.pipe(take(1)).subscribe(messages => {
         this.photoThreadSource.next([...messages, ...allMessages]); 
         
+        allMessages.forEach(message => {  
+          this.pinSource.next(message);
+          cd.detectChanges();
+        });
+        
         console.log("Photo messages ", messages);
         cd.detectChanges();
-      })
+      });
+
+
    
     })
 

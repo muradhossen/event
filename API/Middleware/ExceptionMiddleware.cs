@@ -33,10 +33,13 @@ namespace API.Middleware
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                var response =_evn.IsDevelopment()? new ApiException(context.Response.StatusCode,ex.Message,ex.StackTrace?.ToString()):
-                    new ApiException(context.Response.StatusCode,"Internal server Error");
+                //var response =_evn.IsDevelopment()? new ApiException(context.Response.StatusCode,ex.Message,ex.StackTrace?.ToString()):
+                //    new ApiException(context.Response.StatusCode,"Internal server Error");
 
-                var option= new JsonSerializerOptions { PropertyNamingPolicy=JsonNamingPolicy.CamelCase };
+
+                var response = new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString());
+                   
+                var option = new JsonSerializerOptions { PropertyNamingPolicy=JsonNamingPolicy.CamelCase };
 
                 var json= JsonSerializer.Serialize(response,option);
 
