@@ -126,7 +126,8 @@ export class DashboardComponent implements OnInit {
       pin.style.top = `${pinPosition.y}px`;
       pin.style.width = '15px';
       pin.style.height = '20px';
-      pin.src = '../../assets/locator-icon.png';
+      // pin.src = '../../assets/locator-icon.png';
+      pin.src = 'https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489157/Event/locator-icon_nwtxoh.png';
 
       pin.alt = '.';
 

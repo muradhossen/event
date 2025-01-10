@@ -7,11 +7,13 @@
   }
 
   .background-image-logged-out {
-    background-image: url('../src/assets/home-page-mobile.png');
+    /* background-image: url('../src/assets/home-page-mobile.png'); */
+    background-image: url('https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489163/Event/home-page-mobile_mtbbvm.png');
   }
   
   .background-image-logged-in {
-    background-image: url('../src/assets/dashboard_home.png'); /* Logged-in user image */
+    /* background-image: url('../src/assets/dashboard_home.png');   */
+    background-image: url('https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489161/Event/dashboard_home_ih9otb.png');  
   }
 
   html, body {
