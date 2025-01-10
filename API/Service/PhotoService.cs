@@ -37,7 +37,7 @@ namespace API.Service
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName,strem),
-                    Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face"),
+                    //Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face"),
                     Folder = "Event"
                 };
 
@@ -76,7 +76,7 @@ namespace API.Service
             }
 
            
-            var fileUrl = $"/uploads/{fileName}"; // Relative URL
+            var fileUrl = $"http://103.209.43.78:5000/uploads/{fileName}"; // Relative URL
             return fileUrl;
         }
     }

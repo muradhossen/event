@@ -164,23 +164,38 @@ namespace API.Controllers
 
             //    return await SendPhotoMessage();
 
-            var result = await _photoService.AddPhotoAsync(@params.Image);
+            string imageUrl = string.Empty;
+            string publicId = string.Empty;
 
-            if (result.Error != null)
-                return BadRequest(result.Error.Message);
+            //var result = await _photoService.AddPhotoAsync(@params.Image);
+
+            //if (result.Error != null)
+            //{
+            //    imageUrl = await _photoService.SaveFileAsync(@params.Image);
+            //    publicId = "Local-Image";
+            //}
+            //else
+            //{
+            //    imageUrl = result.SecureUrl.AbsoluteUri;
+            //    publicId = result.PublicId;
+            //}
+
+            imageUrl = await _photoService.SaveFileAsync(@params.Image);
+            publicId = "Local-Image";
+
 
             var photo = new Photo
             {
-                Url = result.SecureUrl.AbsoluteUri,
-                PublicId = result.PublicId
+                Url = imageUrl,
+                PublicId = publicId
             };
 
             await _unitOfWork.UserPhotoMessageRepository.AddAsync(new UserImageMessage
             {
-                 City = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name,
-                PhotoUrl = result.SecureUrl.AbsoluteUri,
+                City = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name,
+                PhotoUrl = photo.Url,
                 CityId = @params.Id,
-                PublicId = result.PublicId
+                PublicId = photo.PublicId
             });
 
             await _unitOfWork.CompletedAsync();
@@ -189,9 +204,10 @@ namespace API.Controllers
             if (connections is not null)
             {
                 await _presenceHub.Clients.Clients(connections)
-                .SendAsync("NewPhotoMessageRecived", new { 
-                    photoUrl = result.SecureUrl.AbsoluteUri,
-                    publicId = result.PublicId,
+                .SendAsync("NewPhotoMessageRecived", new
+                {
+                    photoUrl = photo.Url,
+                    publicId = photo.PublicId,
                     city = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name
                 });
             }
