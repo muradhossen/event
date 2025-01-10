@@ -109,7 +109,8 @@ namespace API
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
-                .WithOrigins("http://localhost:4200", "https://localhost:5001");
+                .WithOrigins("http://localhost:4200",
+                "https://localhost:5001", "http://103.209.43.78");
             }));
 
             #endregion
@@ -193,7 +194,7 @@ namespace API
                 endpoints.MapControllers();
                 endpoints.MapHub<PresenceHub>("hubs/presence");
                 endpoints.MapHub<MessageHub>("hubs/message");
-                endpoints.MapFallbackToController("Index", "Fallback");
+                //endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
