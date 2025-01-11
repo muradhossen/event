@@ -5,72 +5,41 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NavComponent } from './nav/nav.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
-import { MemberListComponent } from './members/member-list/member-list.component';
-import { MemberDetailsComponent } from './members/member-details/member-details.component';
-import { ListsComponent } from './lists/lists.component';
-import { MessagesComponent } from './messages/messages.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
-import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { SharedModule } from './_modules/Shared/shared/shared.module';
-import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
-import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
-import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
-import { HasRoleDirective } from './_directives/has-role.directive';
-import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
-import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
-import { UserManagementComponent } from './admin/user-management/user-management.component';
-import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { HasRoleDirective } from './_directives/has-role.directive'; 
 import { UploadImageComponent } from './upload-image/upload-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { LoginComponent } from './login/login.component';
-import { BackgroundImageComponent } from './background-image/background-image.component';
-
 
 
 @NgModule({
   declarations: [				
     AppComponent,
-    NavComponent,
     HomeComponent,
-    RegisterComponent,
-    MemberListComponent,
-    MemberDetailsComponent,
-    ListsComponent,
-    MessagesComponent,
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    MemberCardComponent,
-    MemberEditComponent,
-    PhotoEditorComponent,
     TextInputComponent,
     DateInputComponent,
-    MemberMessagesComponent,
-    HasRoleDirective,
-    AdminPanelComponent,
-    PhotoManagementComponent,
-    UserManagementComponent,
-    RolesModalComponent,
+    HasRoleDirective, 
       UploadImageComponent,
       DashboardComponent,
       LoginComponent,
-      BackgroundImageComponent
    ],
   imports: [
     BrowserModule,

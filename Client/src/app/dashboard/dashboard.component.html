@@ -18,14 +18,15 @@ coverflow-effect-modifier="1"
 </swiper-slide>
 </swiper-container> -->
 
-<div class="row">
+<img style="position: absolute; left: 0;"
+src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489164/Event/Logo_qa7iso.png" alt="Logo" class="logo"/>
+<div class="row m-1">
   
 <div class="swiper-container-div col-md-6">
   <!-- <img src="../../assets/Logo.png" alt="Logo" class="logo"/> -->
-  <img src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489164/Event/Logo_qa7iso.png" alt="Logo" class="logo"/>
 
   <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
-    watch-slides-progress="true">
+    watch-slides-progress="true"  loop="true">
     <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
       <img [src]="url.photoUrl" />
     </swiper-slide> 
@@ -40,7 +41,16 @@ coverflow-effect-modifier="1"
       <img [src]="url.photoUrl" class="main_slid_image" />
     </swiper-slide> 
   </swiper-container>
-  <!-- <button (click)="addPin()">Add pin</button> -->
+
+    <!-- <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
+    thumbs-swiper=".mySwiper2" space-between="4"  autoplay="true" loop="true"
+     >
+    <swiper-slide class="main_slid_image" >
+      <img src="http://103.209.43.78:5000/uploads/dae4fe36-ea9c-4617-b54f-8247caedabe2.jpeg" class="main_slid_image" />
+       
+    </swiper-slide> 
+  </swiper-container> -->
+ 
 </div>
 
 <div class="col-md-6 map-container"  id="mapContainer">

@@ -122,7 +122,7 @@ export class DashboardComponent implements OnInit {
       // Create an img element for the pin
       const pin = document.createElement('img');
       pin.style.position = 'absolute';
-      pin.style.left = `${pinPosition.x}px`;
+      pin.style.left = `${pinPosition.x + 8}px`;
       pin.style.top = `${pinPosition.y}px`;
       pin.style.width = '15px';
       pin.style.height = '20px';
