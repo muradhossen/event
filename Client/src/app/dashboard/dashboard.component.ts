@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PresenceService } from '../_services/presence.service';
-import { map, take } from 'rxjs/operators';
 import { PhotoMessage } from '../_models/photo-message';
 
 @Component({
@@ -78,6 +77,8 @@ export class DashboardComponent implements OnInit {
   
 
   photoMessages: PhotoMessage[] = [];
+  allocatedPins: {x : number, y : number}[] = [];
+
 
   mapBounds = {
     topLeft: { lat: 26.6319, lon: 88.0844 },
@@ -118,6 +119,16 @@ export class DashboardComponent implements OnInit {
         districtCoords.lat,
         districtCoords.lng
       );
+
+      if (this.allocatedPins.some(p => p.x === pinPosition.x && p.y === pinPosition.y)) {
+        
+        
+        pinPosition.x += Math.random() * 10;
+        pinPosition.y += Math.random() * 10;
+        
+      }
+
+      this.allocatedPins.push(pinPosition);
 
       // Create an img element for the pin
       const pin = document.createElement('img');
