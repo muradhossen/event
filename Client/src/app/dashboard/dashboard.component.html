@@ -1,46 +1,25 @@
-<!-- <swiper-container
- class="mySwiper" 
- pagination="true" 
- effect="coverflow" 
- grab-cursor="true"
-  centered-slides="true"
-slides-per-view="auto"
- coverflow-effect-rotate="50"
-  coverflow-effect-stretch="0"
-   coverflow-effect-depth="100"
-coverflow-effect-modifier="1"
- coverflow-effect-slide-shadows="true"
- loop="true" 
-  autoplay="true" 
-  >
-<swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
-  <img [src]="url" />
-</swiper-slide>
-</swiper-container> -->
-
 <img style="position: absolute; left: 0;"
-src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489164/Event/Logo_qa7iso.png" alt="Logo" class="logo"/>
-<div class="row m-1">
-  
-<div class="swiper-container-div col-md-6">
-  <!-- <img src="../../assets/Logo.png" alt="Logo" class="logo"/> -->
+  src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489164/Event/Logo_qa7iso.png" alt="Logo" class="logo" />
+<div class="row" style="padding-top: 7px;">
 
-  <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
-    watch-slides-progress="true"  loop="true">
-    <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
-      <img [src]="url.photoUrl" />
-    </swiper-slide> 
-  </swiper-container>
+  <div class="swiper-container-div col-md-6">
+    <!-- <img src="../../assets/Logo.png" alt="Logo" class="logo"/> -->
 
-  <hr *ngIf="(presenceService.photoThread$| async).length > 0" />
+    <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
+      watch-slides-progress="true" loop="true">
+      <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
+        <img [src]="url.photoUrl" />
+      </swiper-slide>
+    </swiper-container>
 
-  <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
-    thumbs-swiper=".mySwiper2" space-between="4"  autoplay="true" loop="true"
-     >
-    <swiper-slide class="main_slid_image" *ngFor="let url of (presenceService.photoThread$| async)">
-      <img [src]="url.photoUrl" class="main_slid_image" />
-    </swiper-slide> 
-  </swiper-container>
+    <hr *ngIf="(presenceService.photoThread$| async).length > 0" />
+
+    <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
+      thumbs-swiper=".mySwiper2" space-between="4" autoplay="true" loop="true">
+      <swiper-slide class="main_slid_image" *ngFor="let url of (presenceService.photoThread$| async)">
+        <img [src]="url.photoUrl" class="main_slid_image" />
+      </swiper-slide>
+    </swiper-container>
 
     <!-- <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
     thumbs-swiper=".mySwiper2" space-between="4"  autoplay="true" loop="true"
@@ -50,16 +29,16 @@ src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489164/Event/Logo_qa
        
     </swiper-slide> 
   </swiper-container> -->
- 
-</div>
 
-<div class="col-md-6 map-container"  id="mapContainer">
-  <img src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489161/Event/Our_Way_Logo_c6mxy7.png" width="width-100px" height="100px" style="right: 0;
+  </div>
+
+  <div class="col-md-6 map-container" id="mapContainer">
+    <img src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489161/Event/Our_Way_Logo_c6mxy7.png"
+      width="width-100px" height="100px" style="right: 0;
   position: absolute;
   margin: 10px;">
-<!-- <img src="../../assets/map-2.png" -->
-<img src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489162/Event/map-2_pkda5v.png"
- alt="Bangladesh Map" 
- class="map-image" id="mapImage">
-</div>
+    <!-- <img src="../../assets/map-2.png" -->
+    <img src="https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489162/Event/map-2_pkda5v.png" alt="Bangladesh Map"
+      class="map-image" id="mapImage">
+  </div>
 </div>
