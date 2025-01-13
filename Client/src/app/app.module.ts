@@ -25,10 +25,11 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { LoginComponent } from './login/login.component';
+import { ImageSliderComponent } from './image-slider/image-slider.component';
 
 
 @NgModule({
-  declarations: [				
+  declarations: [					
     AppComponent,
     HomeComponent,
     TestErrorsComponent,
@@ -40,6 +41,7 @@ import { LoginComponent } from './login/login.component';
       UploadImageComponent,
       DashboardComponent,
       LoginComponent,
+      ImageSliderComponent
    ],
   imports: [
     BrowserModule,

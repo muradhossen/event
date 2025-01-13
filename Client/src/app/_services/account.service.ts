@@ -43,7 +43,7 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem('user');
-    this.presenceService.stopHubConnection();
+    this.presenceService?.stopHubConnection();
     this.currentUserSource.next(null);
   }
 
@@ -61,6 +61,17 @@ export class AccountService {
 
   getDecodedToken(token : string){
     return JSON.parse(atob(token.split('.')[1]));
+  }
+
+  isTokenExpired(token: string) {
+
+    var expiration = this.getDecodedToken(token)?.exp;
+
+    if (!expiration) {
+      return true;       
+    }
+
+    return new Date(expiration) < new Date();
   }
 
 }

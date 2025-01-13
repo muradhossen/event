@@ -15,20 +15,20 @@ export class DashboardComponent implements OnInit {
     Barisal: { lat: 22.701002, lng: 90.353451 },
     Bhola: { lat: 22.687146, lng: 90.644397 },
     Bogura: { lat: 24.846522, lng: 89.377755 },
-    Brahmanbaria: { lat: 23.957090, lng: 91.111368 },
+    Brahmanbaria: { lat: 23.95709, lng: 91.111368 },
     Chandpur: { lat: 23.233258, lng: 90.671291 },
     Chattogram: { lat: 22.356851, lng: 91.783182 },
     Chuadanga: { lat: 23.640196, lng: 88.841841 },
     "Cox's Bazar": { lat: 21.427229, lng: 92.005806 },
     Cumilla: { lat: 23.460889, lng: 91.180906 },
     Dhaka: { lat: 23.810331, lng: 90.412521 },
-    Dinajpur: { lat: 25.621706, lng: 88.635450 },
+    Dinajpur: { lat: 25.621706, lng: 88.63545 },
     Faridpur: { lat: 23.606119, lng: 89.841387 },
-    Feni: { lat: 23.020359, lng: 91.396330 },
+    Feni: { lat: 23.020359, lng: 91.39633 },
     Gaibandha: { lat: 25.328751, lng: 89.528088 },
-    Gazipur: { lat: 23.999940, lng: 90.420273 },
+    Gazipur: { lat: 23.99994, lng: 90.420273 },
     Gopalganj: { lat: 23.005085, lng: 89.826605 },
-    Habiganj: { lat: 24.374945, lng: 91.415530 },
+    Habiganj: { lat: 24.374945, lng: 91.41553 },
     Jamalpur: { lat: 24.937533, lng: 89.937775 },
     Jashore: { lat: 23.169789, lng: 89.213043 },
     Jhalokati: { lat: 22.640575, lng: 90.200626 },
@@ -46,13 +46,13 @@ export class DashboardComponent implements OnInit {
     Manikganj: { lat: 23.854109, lng: 90.004784 },
     Meherpur: { lat: 23.763927, lng: 88.631841 },
     Moulvibazar: { lat: 24.482934, lng: 91.777417 },
-    Munshiganj: { lat: 23.542074, lng: 90.530290 },
+    Munshiganj: { lat: 23.542074, lng: 90.53029 },
     Mymensingh: { lat: 24.747148, lng: 90.420273 },
     Naogaon: { lat: 24.815634, lng: 88.948017 },
     Narail: { lat: 23.164102, lng: 89.496573 },
     Narayanganj: { lat: 23.622935, lng: 90.499699 },
     Narsingdi: { lat: 23.932233, lng: 90.717989 },
-    Natore: { lat: 24.420556, lng: 89.000000 },
+    Natore: { lat: 24.420556, lng: 89.0 },
     Netrokona: { lat: 24.883497, lng: 90.727481 },
     Nilphamari: { lat: 25.929666, lng: 88.856006 },
     Noakhali: { lat: 22.869563, lng: 91.098772 },
@@ -60,25 +60,23 @@ export class DashboardComponent implements OnInit {
     Panchagarh: { lat: 26.341081, lng: 88.554182 },
     Patuakhali: { lat: 22.359631, lng: 90.329871 },
     Pirojpur: { lat: 22.579672, lng: 89.975035 },
-    Rajbari: { lat: 23.757430, lng: 89.644466 },
+    Rajbari: { lat: 23.75743, lng: 89.644466 },
     Rajshahi: { lat: 24.363588, lng: 88.624135 },
     Rangamati: { lat: 22.637743, lng: 92.203882 },
     Rangpur: { lat: 25.746679, lng: 89.250701 },
     Satkhira: { lat: 22.718562, lng: 89.070844 },
-    Shariatpur: { lat: 23.241490, lng: 90.434317 },
+    Shariatpur: { lat: 23.24149, lng: 90.434317 },
     Sherpur: { lat: 25.020493, lng: 90.017535 },
     Sirajganj: { lat: 24.453397, lng: 89.700684 },
     Sunamganj: { lat: 25.065804, lng: 91.395011 },
-    Sylhet: { lat: 24.894930, lng: 91.868706 },
+    Sylhet: { lat: 24.89493, lng: 91.868706 },
     Tangail: { lat: 24.249844, lng: 89.916457 },
     Thakurgaon: { lat: 26.033694, lng: 88.461683 },
-    "Chapai Nawabganj": { lat: 24.596503, lng: 88.277512 }
+    'Chapai Nawabganj': { lat: 24.596503, lng: 88.277512 },
   };
-  
 
   photoMessages: PhotoMessage[] = [];
-  allocatedPins: {x : number, y : number}[] = [];
-
+  allocatedPins: { x: number; y: number }[] = [];
 
   mapBounds = {
     topLeft: { lat: 26.6319, lon: 88.0844 },
@@ -86,27 +84,33 @@ export class DashboardComponent implements OnInit {
   };
   mapDimensions = { width: 555, height: 741 };
 
-  constructor(public presenceService: PresenceService) {
+   swiper : any;
 
-  }
+  constructor(public presenceService: PresenceService) {}
 
   ngOnInit() {
-    // this.presenceService.photoThread$.pipe(take(1)).subscribe((res) => {
-    //   [... this.photoMessages, res]
-    //   console.log("Photo messages ", this.photoMessages);
-    // });
+
+
+    this.addSlide();
 
     this.presenceService.pin$.subscribe((res) => {
-       
       if (res?.city) {
+        this.appendSlide(res);
+        // this.appendNewSlide(res);
         this.addPin(res.city);
       }
     });
   }
+  appendSlide(res: PhotoMessage) {
+
+    this.photoMessages.push(res);
+    this.swiper.virtual.appendSlide(`<img src="${res.photoUrl}" alt="photo"/> `);
+
+    this.swiper.slideTo( this.photoMessages.length - 1, 0);
+  }
 
   addPin(city: string) {
 
-    debugger
     console.log('City ', city);
     const mapImage = document.getElementById('mapContainer');
     const districtSelect = city;
@@ -120,12 +124,13 @@ export class DashboardComponent implements OnInit {
         districtCoords.lng
       );
 
-      if (this.allocatedPins.some(p => p.x === pinPosition.x && p.y === pinPosition.y)) {
-        
-        
+      if (
+        this.allocatedPins.some(
+          (p) => p.x === pinPosition.x && p.y === pinPosition.y
+        )
+      ) {
         pinPosition.x += Math.random() * 10;
         pinPosition.y += Math.random() * 10;
-        
       }
 
       this.allocatedPins.push(pinPosition);
@@ -138,7 +143,8 @@ export class DashboardComponent implements OnInit {
       pin.style.width = '15px';
       pin.style.height = '20px';
       // pin.src = '../../assets/locator-icon.png';
-      pin.src = 'https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489157/Event/locator-icon_nwtxoh.png';
+      pin.src =
+        'https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489157/Event/locator-icon_nwtxoh.png';
 
       pin.alt = '.';
 
@@ -155,19 +161,45 @@ export class DashboardComponent implements OnInit {
 
     return { x, y };
   }
-}
 
-function calculatePinPosition(lat, lng) {
-  const mapWidth = 624;
-  const mapHeight = 850;
+  addSlide() {
 
-  const minLat = 20; // Replace with minimum latitude of your map
-  const maxLat = 27; // Replace with maximum latitude of your map
-  const minLng = 88; // Replace with minimum longitude of your map
-  const maxLng = 93; // Replace with maximum longitude of your map
+    const swiperEl: any = document.querySelector('swiper-container');
 
-  const x = ((lng - minLng) / (maxLng - minLng)) * mapWidth;
-  const y = ((maxLat - lat) / (maxLat - minLat)) * mapHeight; // Invert Y-axis for correct positioning
+    Object.assign(swiperEl, {
+      slidesPerView: 1,
+      centeredSlides: true,
+      spaceBetween: 5,
+      autoplay : true ,
+      // thumbsSwiper  : ".mySwiper2",
+      virtual: {
+        slides: (function () {
+          const slides = [];
+          return slides;
+        })(),
+      },
+    });
 
-  return { x: x, y: y };
+    swiperEl.initialize();
+
+    this.swiper = swiperEl.swiper;
+
+  }
+
+  appendNewSlide(photoMessage: PhotoMessage) {  
+    const elements = document.getElementsByClassName("mySwiper");
+
+     
+    if (elements.length > 0) {
+      const mySwiperElement : any = elements[0];  
+      this.swiper = mySwiperElement.swiper;
+
+      this.swiper.virtual.appendSlide(`
+         <swiper-slide class="main_slid_image">
+        <img [src]="photoMessage.photoUrl" class="main_slid_image" />
+               </swiper-slide>
+        `);
+    }
+
+  }
 }

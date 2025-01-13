@@ -5,7 +5,8 @@
   <div class="swiper-container-div col-md-6">
     <!-- <img src="../../assets/Logo.png" alt="Logo" class="logo"/> -->
 
-    <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
+    <!-- Slide in PORD : START -->
+    <!-- <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
       watch-slides-progress="true" loop="true">
       <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
         <img [src]="url.photoUrl" />
@@ -19,8 +20,11 @@
       <swiper-slide class="main_slid_image" *ngFor="let url of (presenceService.photoThread$| async)">
         <img [src]="url.photoUrl" class="main_slid_image" />
       </swiper-slide>
-    </swiper-container>
+    </swiper-container> -->
 
+    <!-- Slide in PORD : END -->
+
+    <!-- Single slide for test : START -->
     <!-- <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
     thumbs-swiper=".mySwiper2" space-between="4"  autoplay="true" loop="true"
      >
@@ -29,6 +33,24 @@
        
     </swiper-slide> 
   </swiper-container> -->
+  <!-- Single slide for test : END --> 
+
+ 
+  <!-- Slide experiment : START -->
+
+    <!-- <swiper-container class="mySwiper2" space-between="5" slides-per-view="5" free-mode="true"
+  watch-slides-progress="true"  >
+  <swiper-slide *ngFor="let url of (presenceService.photoThread$| async)">
+    <img [src]="url.photoUrl" />
+  </swiper-slide>
+</swiper-container> -->
+
+<app-image-slider></app-image-slider>
+
+  <hr *ngIf="(presenceService.photoThread$| async).length > 0" />
+  <swiper-container init="false"></swiper-container>
+  <!-- Slide experiment : END -->
+
 
   </div>
 

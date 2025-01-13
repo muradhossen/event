@@ -1,23 +1,4 @@
-/* swiper-container {
-    width: 89%;
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
-
-  swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: 300px;
-    height: 300px;
-  }
-
-  swiper-slide img {
-    display: block;
-    width: 100%;
-  } */
-
-
-  .swiper-container-div{
+  /* .swiper-container-div{
     width: 50%;
     height: 50%;  
      
@@ -61,9 +42,7 @@
     background-position: center;
   }
 
-  .mySwiper {
-    /* height: 300px;
-    width: 300px; */
+  .mySwiper { 
     height: 50%;
     width: 100%;
   }
@@ -78,7 +57,7 @@
     width: 100px;
     height: 100px;
     opacity: 0.4;
-        width: 50%;
+    width: 50%;
   }
 
   .mySwiper2 .swiper-slide-thumb-active {
@@ -91,7 +70,7 @@
     height: 100%;
     object-fit: contain;
     max-height: 610px;
-  }
+  } */
 
   .round-img{
     border-radius: 2px 2px 10px 10px;
@@ -114,4 +93,7 @@
     width: 100%;  
     height: auto; 
   }
+
+
+
 

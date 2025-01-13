@@ -31,9 +31,16 @@
   .main_slid_image {
     border-radius: 0 0 10px 10px !important;
   }
-/* 
-  @media (max-width: 768px) {
-    .background-image {
-      background-size: contain;  
-    }
-  } */
+ 
+
+    /* Experiment : START */
+   
+    swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 610px;
+    } 
+
+    /* Experiment : END */
