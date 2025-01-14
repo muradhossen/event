@@ -48,7 +48,7 @@
 <app-image-slider></app-image-slider>
 
   <hr *ngIf="(presenceService.photoThread$| async).length > 0" />
-  <swiper-container init="false"></swiper-container>
+  <swiper-container init="false" #swiperContainer></swiper-container>
   <!-- Slide experiment : END -->
 
 

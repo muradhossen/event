@@ -8,57 +8,44 @@ import { PhotoMessage } from '../_models/photo-message';
   styleUrls: ['./image-slider.component.scss']
 })
 export class ImageSliderComponent implements OnInit {
+  currentIndex: number = 0; // Tracks the current slide group
+  totalSlides: number = 0; // Total slides
+  slideInterval: any;
 
-  photoMessages: PhotoMessage [] = [];
-  autoplayInterval: any;
+  readonly visibleImagesCount = 5; // Number of images to show at a time
 
-  constructor(public presenceService: PresenceService) { }
+  constructor(public presenceService: PresenceService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.presenceService.photoThread$.subscribe((photos) => {
+      this.totalSlides = photos.length;
 
-    this.presenceService.pin$.subscribe((res) => {
-
-      if (res?.photoUrl) {
-        this.photoMessages.push(res);
+      // Start autoplay if there are slides
+      if (this.totalSlides > this.visibleImagesCount) {
+        this.startAutoPlay();
       }
     });
   }
- 
-  
-  currentIndex = 0;
-  visibleImages = 5;
-
-  moveSlide(direction: number): void {
-    this.stopAutoplay(); // Stop autoplay when navigating manually
-
-    if (direction === 1) {
-      this.currentIndex = (this.currentIndex + 1) % this.photoMessages.length;
-    } else {
-      this.currentIndex =
-        (this.currentIndex - 1 + this.photoMessages.length) % this.photoMessages.length;
-    }
-
-    this.startAutoplay(); // Restart autoplay after manual navigation
-  }
 
   getTransformStyle(): string {
-    return `translateX(-${this.currentIndex * (100 / this.visibleImages)}%)`;
+    // Translate the slider based on the current group of visible slides
+    return `translateX(-${(this.currentIndex * 100) / this.visibleImagesCount}%)`;
   }
 
-  startAutoplay(): void {
-    this.autoplayInterval = setInterval(() => {
-      this.moveSlide(1);
-    }, 1000); 
+  getTransitionStyle(): string {
+    // Smooth transition
+    return 'transform 0.5s ease-in-out';
   }
 
-  stopAutoplay(): void {
-    if (this.autoplayInterval) {
-      clearInterval(this.autoplayInterval);
-      this.autoplayInterval = null;
-    }
+  startAutoPlay(): void {
+    this.slideInterval = setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % Math.ceil(this.totalSlides / this.visibleImagesCount);
+    }, 3000); // Change slide group every 3 seconds
   }
 
   ngOnDestroy(): void {
-    this.stopAutoplay();
+    if (this.slideInterval) {
+      clearInterval(this.slideInterval);
+    }
   }
 }

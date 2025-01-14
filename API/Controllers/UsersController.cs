@@ -190,13 +190,14 @@ namespace API.Controllers
                 PublicId = publicId
             };
 
-            await _unitOfWork.UserPhotoMessageRepository.AddAsync(new UserImageMessage
+            var imageUploadRequest = new UserImageMessage
             {
                 City = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name,
                 PhotoUrl = photo.Url,
                 CityId = @params.Id,
                 PublicId = photo.PublicId
-            });
+            };
+            await _unitOfWork.UserPhotoMessageRepository.AddAsync(imageUploadRequest);
 
             await _unitOfWork.CompletedAsync();
 
@@ -208,7 +209,8 @@ namespace API.Controllers
                 {
                     photoUrl = photo.Url,
                     publicId = photo.PublicId,
-                    city = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name
+                    city = Seed.SeedCities().FirstOrDefault(c => c.Id == @params.Id)?.Name,
+                    id = imageUploadRequest.Id
                 });
             }
             return Ok(_mapper.Map<PhotoDto>(photo));

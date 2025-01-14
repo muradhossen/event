@@ -1,8 +1,7 @@
 <div class="custom-slider-container">
-  <div class="slider-wrapper" [style.transform]="getTransformStyle()">
-    <div class="custom-slider-item"  *ngFor="let url of (presenceService.photoThread$| async)">
-      <img [src]="url.photoUrl" alt="Image">
+  <div class="slider-wrapper" [style.transform]="getTransformStyle()" [style.transition]="getTransitionStyle()">
+    <div class="custom-slider-item" *ngFor="let url of (presenceService.photoThread$ | async)">
+      <img [src]="url.photoUrl" alt="Image" height="100px" width="100px" id="secondary-image-{{url.id}}">
     </div>
   </div>
- 
 </div>

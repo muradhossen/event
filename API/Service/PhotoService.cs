@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using System.IO;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace API.Service
 {
@@ -75,8 +76,8 @@ namespace API.Service
                 await file.CopyToAsync(stream);
             }
 
-           
-            var fileUrl = $"http://103.209.43.78:5000/uploads/{fileName}"; // Relative URL
+
+            var fileUrl = _environment.IsDevelopment() ? $"https://localhost:44348/uploads/{fileName}" : $"http://103.209.43.78:5000/uploads/{fileName}"; 
             return fileUrl;
         }
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PresenceService } from '../_services/presence.service';
 import { PhotoMessage } from '../_models/photo-message';
 
@@ -7,7 +7,7 @@ import { PhotoMessage } from '../_models/photo-message';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit ,AfterViewInit, OnDestroy {
   districtCoordinates = {
     Bagerhat: { lat: 22.651568, lng: 89.785938 },
     Bandarban: { lat: 22.195327, lng: 92.218377 },
@@ -75,6 +75,9 @@ export class DashboardComponent implements OnInit {
     'Chapai Nawabganj': { lat: 24.596503, lng: 88.277512 },
   };
 
+  @ViewChild('swiperContainer') swiperContainer!: ElementRef;
+  private observer!: MutationObserver;
+  
   photoMessages: PhotoMessage[] = [];
   allocatedPins: { x: number; y: number }[] = [];
 
@@ -97,21 +100,28 @@ export class DashboardComponent implements OnInit {
       if (res?.city) {
         this.appendSlide(res);
         // this.appendNewSlide(res);
-        this.addPin(res.city);
+        this.addPin(res);
+
       }
     });
   }
   appendSlide(res: PhotoMessage) {
 
     this.photoMessages.push(res);
-    this.swiper.virtual.appendSlide(`<img src="${res.photoUrl}" alt="photo"/> `);
+
+    const el = `<img src="${res.photoUrl}" alt="photo" id="${res.id}"/> `;    
+    this.swiper.virtual.appendSlide(el);
+
+    console.log(el);
 
     this.swiper.slideTo( this.photoMessages.length - 1, 0);
   }
 
-  addPin(city: string) {
+  addPin(message: PhotoMessage) {
 
-    console.log('City ', city);
+    const city = message.city;
+    const id = message.id;
+
     const mapImage = document.getElementById('mapContainer');
     const districtSelect = city;
 
@@ -147,11 +157,31 @@ export class DashboardComponent implements OnInit {
         'https://res.cloudinary.com/do7pdjcnd/image/upload/v1736489157/Event/locator-icon_nwtxoh.png';
 
       pin.alt = '.';
+      pin.id = `pin-${id}`;
 
-      mapImage.appendChild(pin);
+      mapImage.appendChild(pin); 
     }
   }
 
+  enlargePin(targetId: string) {
+
+    const allPins = document.querySelectorAll('img');
+
+    allPins.forEach((pin) => {
+      if (pin.id === targetId) {
+         
+        pin.style.width = '25px';  
+        pin.style.height = '35px'; 
+      } else {
+        if (pin.id.includes('pin')) {
+          pin.style.width = '15px';
+          pin.style.height = '20px';
+         
+        } 
+      }
+    });
+
+  }
   private geoToPixel(lat: number, lon: number): { x: number; y: number } {
     const { topLeft, bottomRight } = this.mapBounds;
     const { width, height } = this.mapDimensions;
@@ -201,5 +231,42 @@ export class DashboardComponent implements OnInit {
         `);
     }
 
+  }
+
+  detectActiveSlide(): void {
+    const activeSlide = this.swiperContainer.nativeElement.querySelector('.swiper-slide-active');
+    if (activeSlide) {
+      
+      const imgElement = activeSlide.querySelector('img');
+      if (imgElement) {
+        console.log('Image ID:', imgElement.id); 
+        this.enlargePin(`pin-${imgElement.id}`);
+      }
+    }
+  }
+
+  ngAfterViewInit(): void {
+     
+    if (this.swiperContainer) {
+      this.observer = new MutationObserver(() => {
+        this.detectActiveSlide();
+      });
+
+      
+      this.observer.observe(this.swiperContainer.nativeElement, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ['class']
+      });
+
+      // Detect the initial active slide
+      this.detectActiveSlide();
+    }
+  }
+  ngOnDestroy(): void {
+    
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 }

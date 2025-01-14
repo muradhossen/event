@@ -87,13 +87,13 @@ export class PresenceService {
         })
     })
 
-    this.hubConnection.on("NewPhotoMessageRecived", ({ photoUrl, publicId, city }) => {
+    this.hubConnection.on("NewPhotoMessageRecived", ({ photoUrl, publicId, city,id }) => {
  
  
       this.photoThread$.pipe(take(1)).subscribe(messages => {
-        this.photoThreadSource.next([...messages, { photoUrl, publicId, city }]); 
+        this.photoThreadSource.next([...messages, { photoUrl, publicId, city,id }]); 
          
-        this.pinSource.next({ photoUrl, publicId, city });
+        this.pinSource.next({ photoUrl, publicId, city,id });
         cd.detectChanges();
       });
    
