@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { PresenceService } from '../_services/presence.service';
 import { PhotoMessage } from '../_models/photo-message';
 
@@ -7,12 +7,15 @@ import { PhotoMessage } from '../_models/photo-message';
   templateUrl: './image-slider.component.html',
   styleUrls: ['./image-slider.component.scss']
 })
-export class ImageSliderComponent implements OnInit {
+export class ImageSliderComponent implements OnInit,OnChanges   {
   currentIndex: number = 0; // Tracks the current slide group
   totalSlides: number = 0; // Total slides
   slideInterval: any;
 
   readonly visibleImagesCount = 5; // Number of images to show at a time
+
+  @Input() focusImageId: number; 
+
 
   constructor(public presenceService: PresenceService) {}
 
@@ -20,11 +23,21 @@ export class ImageSliderComponent implements OnInit {
     this.presenceService.photoThread$.subscribe((photos) => {
       this.totalSlides = photos.length;
 
-      // Start autoplay if there are slides
-      if (this.totalSlides > this.visibleImagesCount) {
-        this.startAutoPlay();
-      }
+      
+      // if (this.totalSlides > this.visibleImagesCount) {
+      //   this.startAutoPlay();
+      // }
+
     });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['focusImageId'] && changes['focusImageId'].currentValue !== null) {
+
+      const id = changes['focusImageId'].currentValue;
+      if (id) {
+        this.centerImageById(id);        
+      }
+    }
   }
 
   getTransformStyle(): string {
@@ -47,5 +60,22 @@ export class ImageSliderComponent implements OnInit {
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
     }
+  }
+
+  centerImageById(id: number): void {
+    this.presenceService.photoThread$.subscribe((photos) => {
+      const index = photos.findIndex((photo) => photo.id === id);
+
+      if (index !== -1) {
+        // Calculate the starting index of the group to center the image
+        const halfVisible = Math.floor(this.visibleImagesCount / 2);
+        this.currentIndex = Math.max(0, index - halfVisible);
+
+        // Prevent the group from exceeding the slide bounds
+        if (this.currentIndex > this.totalSlides - this.visibleImagesCount) {
+          this.currentIndex = this.totalSlides - this.visibleImagesCount;
+        }
+      }
+    });
   }
 }

@@ -88,6 +88,7 @@ export class DashboardComponent implements OnInit ,AfterViewInit, OnDestroy {
   mapDimensions = { width: 555, height: 741 };
 
    swiper : any;
+   activeSlideId : number;
 
   constructor(public presenceService: PresenceService) {}
 
@@ -241,6 +242,7 @@ export class DashboardComponent implements OnInit ,AfterViewInit, OnDestroy {
       if (imgElement) {
         console.log('Image ID:', imgElement.id); 
         this.enlargePin(`pin-${imgElement.id}`);
+        this.activeSlideId = Number.parseInt(imgElement.id);  
       }
     }
   }
