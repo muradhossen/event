@@ -8,4 +8,6 @@ public interface IUserPhotoMessageRepository
 {
     Task<IList<UserImageMessage>> GetAllUserImageMessages();
     Task<UserImageMessage> AddAsync(UserImageMessage userImageMessage);
+    Task<List<UserImageMessage>> GetAllAsync();
+    Task<bool> DeleteAsync(int id);
 }

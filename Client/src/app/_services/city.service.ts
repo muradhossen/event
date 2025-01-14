@@ -7,6 +7,7 @@ import { User } from '../_models/user';
 import { PresenceService } from './presence.service';
 import { City } from '../_models/city';
 import { UserPhotoParams } from '../_models/userPhotoParams';
+import { PhotoMessage } from '../_models/photo-message';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,14 @@ export class CityService {
   uploadImage(cityParams: UserPhotoParams) {
     return this.http.post(this.baseUrl + 'Users/upload-photo', mapToFomData(cityParams));
   }
+
+  GetSlideImageList() {
+    return this.http.get<PhotoMessage[]>(this.baseUrl + 'Slides');
+  } 
+
+  DeleteSlideImage(id : number) {
+    return this.http.delete(this.baseUrl + `Slides/${id}`);
+  } 
 }
 function mapToFomData(cityParams: UserPhotoParams): any {
   const formData = new FormData();

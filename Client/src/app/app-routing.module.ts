@@ -5,11 +5,14 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { HomeComponent } from './home/home.component'; 
 import { LoginComponent } from './login/login.component';
+import { SlideImageListComponent } from './slide-image-list/slide-image-list.component';
+import { AuthGuard } from './_guards/auth.guard';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  {path : 'login' , component : LoginComponent}, 
+  { path : 'login' , component : LoginComponent}, 
+  { path : 'list', component : SlideImageListComponent, canActivate: [AuthGuard]},
   { path: 'errors', component: TestErrorsComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },

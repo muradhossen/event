@@ -1,0 +1,26 @@
+<div style="overflow: scroll; height: 100%;">
+  <table class="table table-sm table-dark">
+    <thead>
+      <tr>
+        <th>#Id</th>
+        <th>Image</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let image of list">
+        <th>{{image.id}}</th>
+        <td> 
+          <img [src]="image.photoUrl" alt="image" style="width: 100px; height: 100px;">
+        </td>
+        <td>
+          <button type="button" class="btn btn-dark" (click)="deleteSlideImage(image.id)">
+            Delete
+          </button>
+        </td>
+       
+      </tr>
+   
+    </tbody>
+  </table>
+</div>
